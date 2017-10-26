@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/gson-2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/json-20151123.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jersey-bundle-1.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/json-20090211.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/asm-all-3.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jsr311-api-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
