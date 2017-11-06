@@ -13,32 +13,38 @@ import java.util.List;
 
 @Path("/mediatheque")
 public class WService {
-	
-	
-	/***************************************************/
-	/***************Partie sur les adhérents **************/
-	/*****************************************************/
+
+	/* AJOUT & MODIFICATION */
 	@POST
-	@Path("/Adherents/ajout/{unAdh}")
+	@Path("/adherents/insertion")
 	@Consumes("application/json")	
-	public void insertionAdherent(String unAdherent) throws MonException {
+	public String insertionAdherent(String unAdherent) {
 		DialogueBd unDialogueBd = DialogueBd.getInstance();
 		Gson gson = new Gson();
 		Adherent unAdh = gson.fromJson(unAdherent, Adherent.class);
 		try {
-			String mysql = "";
-			mysql = "INSERT INTO adherent (nom_adherent, prenom_adherent, ville_adherent) ";
-			mysql += " VALUES ( \'" + unAdh.getNomAdherent()+ "\', \'" + unAdh.getPrenomAdherent();
-			mysql+="  \', \'"  + unAdh.getVilleAdherent() +  "\') ";
-			
+			String mysql;
+			if(unAdh.getIdAdherent() == 0) {
+				mysql = "INSERT INTO adherent (nom_adherent, prenom_adherent, ville_adherent) ";
+				mysql += " VALUES ( \'" + unAdh.getNomAdherent()+ "\', \'" + unAdh.getPrenomAdherent();
+				mysql+="  \', \'"  + unAdh.getVilleAdherent() +  "\') ";
+			}
+			else {
+				mysql = "UPDATE adherent " +
+						"SET nom_adherent = '" + unAdh.getNomAdherent() + "', " +
+						"prenom_adherent = '" + unAdh.getPrenomAdherent() + "', " +
+						"ville_adherent = '" + unAdh.getVilleAdherent() + "' " +
+						"WHERE id_adherent = " + unAdh.getIdAdherent() + ";";
+			}
 			unDialogueBd.insertionBD(mysql);
-			
 		} catch (MonException e) {
-			throw e;
+			e.printStackTrace();
 		}
+
+		return "OK";
 	}
 	
-	
+	/* GET ALL */
 	@GET
 	@Path("/Adherents")
 	@Produces("application/json")
@@ -56,7 +62,7 @@ public class WService {
 
 			while (index < rs.size()) {
 
-				// On crï¿½e un objet Adherent
+				// On cr?e un objet Adherent
 				Adherent unAdh = new Adherent();
 				unAdh.setIdAdherent(Integer.parseInt(rs.get(index + 0).toString()));
 				unAdh.setNomAdherent(rs.get(index + 1).toString());
@@ -76,6 +82,25 @@ public class WService {
 			throw e;
 		}
 	}
+
+	/* DELETE */
+	@DELETE
+	@Path("/adherents/suppression/{unAdh}")
+	public String suppressionAdherent(@PathParam("unAdh") int id) {
+		DialogueBd unDialogueBd = DialogueBd.getInstance();
+		Gson gson = new Gson();
+
+		try {
+			String mysql;
+			mysql = "DELETE FROM `adherent` WHERE id_adherent = " + id + ";";
+			unDialogueBd.insertionBD(mysql);
+		} catch (MonException e) {
+			e.printStackTrace();
+		}
+
+		return "OK";
+	}
+
 
 	@GET
 	@Path("/Oeuvres")
