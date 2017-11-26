@@ -184,23 +184,32 @@ public class WService {
 		}
 	}
 
-//	@POST
-//	@Path("/Oeuvres/ajout/{id}")
-//	@Consumes("application/json")
-//	public void insertionOeuvre(String uneOeuvre) {
-//		DialogueBd unDialogueBd = DialogueBd.getInstance();
-//		Gson gson = new Gson();
-//		Adherent unAdh = gson.fromJson(uneOeuvre, Adherent.class);
-//		try {
-//			String mysql = "";
-//			mysql = "INSERT INTO adherent (titre_oeuvrevente, etat_oeuvrevente, prix_oeuvrevente, id_proprietaire) ";
-//			mysql += " VALUES ( \'" + unAdh.getNomAdherent()+ "\', \'" + unAdh.getPrenomAdherent();
-//			mysql+="  \', \'"  + unAdh.getVilleAdherent() +  "\') ";
-//
-//			unDialogueBd.insertionBD(mysql);
-//
-//		} catch (MonException e) {
-//			throw e;
-//		}
-//	}
+	@POST
+	@Path("/oeuvres/insertion")
+	@Consumes("application/json")
+	public String insertionOeuvre(String uneOeuvre) {
+		DialogueBd unDialogueBd = DialogueBd.getInstance();
+		Gson gson = new Gson();
+		Oeuvrevente uneOeuvrevente = gson.fromJson(uneOeuvre, Oeuvrevente.class);
+		try {
+			String mysql;
+			if(uneOeuvrevente.getIdOeuvrevente() == 0) {
+				mysql = "INSERT INTO oeuvrevente (titre_oeuvrevente, etat_oeuvrevente, prix_oeuvrevente, id_proprietaire) ";
+				mysql += " VALUES ( \'" + uneOeuvrevente.getTitreOeuvrevente()+ "\', \'" + uneOeuvrevente.getEtatOeuvrevente();
+				mysql += " \'" + uneOeuvrevente.getPrixOeuvrevente()+ "\', \'" + uneOeuvrevente.getProprietaire()+ "\')";
+			}
+			else {
+				mysql = "UPDATE oeuvrevente " +
+						"SET titre_oeuvrevente = '" + uneOeuvrevente.getTitreOeuvrevente() + "', " +
+						"etat_oeuvrevente = '" + uneOeuvrevente.getEtatOeuvrevente() + "', " +
+						"prix_oeuvrevente = '" + uneOeuvrevente.getPrixOeuvrevente() + "' " +
+						"WHERE id_proprietaire = " + uneOeuvrevente.getProprietaire() + ";";
+			}
+			unDialogueBd.insertionBD(mysql);
+		} catch (MonException e) {
+			e.printStackTrace();
+		}
+
+		return "OK";
+	}
 }
