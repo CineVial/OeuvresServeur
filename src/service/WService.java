@@ -17,7 +17,7 @@ public class WService {
 	/* AJOUT & MODIFICATION */
 	@POST
 	@Path("/adherents/insertion")
-	@Consumes("application/json")	
+	@Consumes("application/json")
 	public String insertionAdherent(String unAdherent) {
 		DialogueBd unDialogueBd = DialogueBd.getInstance();
 		Gson gson = new Gson();
@@ -43,7 +43,7 @@ public class WService {
 
 		return "OK";
 	}
-	
+
 	/* GET ALL */
 	@GET
 	@Path("/Adherents")
@@ -71,12 +71,12 @@ public class WService {
 				index = index + 4;
 
 				mesAdherents.add(unAdh);
-			}		
-						
+			}
+
 			Gson gson = new Gson();
 			String json = gson.toJson(mesAdherents);
 			return json;
-		
+
 		} catch (MonException e) {
 			System.out.println(e.getMessage());
 			throw e;
@@ -211,5 +211,43 @@ public class WService {
 		}
 
 		return "OK";
+	}
+
+	@GET
+	@Path("/Proprietaires")
+	@Produces("application/json")
+	public String rechercheLesProprietaires() throws MonException {
+		try {
+			List<Object> rs;
+			List<Proprietaire> proprietaires = new ArrayList<>();
+
+			DialogueBd unDialogueBd = DialogueBd.getInstance();
+			String mysql = "SELECT * FROM proprietaire ORDER BY id_proprietaire ASC";
+
+			rs = unDialogueBd.lecture(mysql);
+
+			int index = 0;
+
+			while (index < rs.size()) {
+
+				Proprietaire proprietaire = new Proprietaire();
+
+				proprietaire.setIdProprietaire(Integer.parseInt(rs.get(index + 0).toString()));
+				proprietaire.setNomProprietaire(rs.get(index + 1).toString());
+				proprietaire.setPrenomProprietaire(rs.get(index + 2).toString());
+
+				index = index + 3;
+
+				proprietaires.add(proprietaire);
+			}
+
+			Gson gson = new Gson();
+
+			return gson.toJson(proprietaires);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+
 	}
 }
