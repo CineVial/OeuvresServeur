@@ -196,14 +196,14 @@ public class WService {
 			if(uneOeuvrevente.getIdOeuvrevente() == 0) {
 				mysql = "INSERT INTO oeuvrevente (titre_oeuvrevente, etat_oeuvrevente, prix_oeuvrevente, id_proprietaire) ";
 				mysql += " VALUES ( \'" + uneOeuvrevente.getTitreOeuvrevente()+ "\', \'" + uneOeuvrevente.getEtatOeuvrevente();
-				mysql += " \'" + uneOeuvrevente.getPrixOeuvrevente()+ "\', \'" + uneOeuvrevente.getProprietaire()+ "\')";
+				mysql += "\', \'" + uneOeuvrevente.getPrixOeuvrevente()+ "\', \'" + uneOeuvrevente.getProprietaire().getIdProprietaire() + "\')";
 			}
 			else {
 				mysql = "UPDATE oeuvrevente " +
 						"SET titre_oeuvrevente = '" + uneOeuvrevente.getTitreOeuvrevente() + "', " +
 						"etat_oeuvrevente = '" + uneOeuvrevente.getEtatOeuvrevente() + "', " +
-						"prix_oeuvrevente = '" + uneOeuvrevente.getPrixOeuvrevente() + "' " +
-						"WHERE id_proprietaire = " + uneOeuvrevente.getProprietaire() + ";";
+						"prix_oeuvrevente = '" + uneOeuvrevente.getPrixOeuvrevente() + "', " +
+						"WHERE id_proprietaire = '" + uneOeuvrevente.getProprietaire().getIdProprietaire() + "';";
 			}
 			unDialogueBd.insertionBD(mysql);
 		} catch (MonException e) {
