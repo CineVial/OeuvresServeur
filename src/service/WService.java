@@ -213,6 +213,22 @@ public class WService {
 		return "OK";
 	}
 
+	@DELETE
+	@Path("/oeuvres/suppression/{uneOeuvre}")
+	public String suppressionOeuvre(@PathParam("uneOeuvre") int id) {
+		DialogueBd unDialogueBd = DialogueBd.getInstance();
+
+		try {
+			String mysql;
+			mysql = "DELETE FROM `oeuvrevente` WHERE id_oeuvrevente = " + id + ";";
+			unDialogueBd.insertionBD(mysql);
+		} catch (MonException e) {
+			e.printStackTrace();
+		}
+
+		return "OK";
+	}
+
 	@GET
 	@Path("/Proprietaires")
 	@Produces("application/json")
