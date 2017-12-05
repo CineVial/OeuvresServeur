@@ -111,7 +111,7 @@ public class WService {
 			List<Oeuvrevente> mesOeuvres = new ArrayList<>();
 
 			DialogueBd unDialogueBd = DialogueBd.getInstance();
-			String mysql = "SELECT * FROM oeuvrevente ORDER BY id_oeuvrevente ASC";
+			String mysql = "SELECT * FROM oeuvrevente o LEFT JOIN proprietaire p ON o.id_proprietaire = p.id_proprietaire ORDER BY id_oeuvrevente ASC";
 
 			rs = unDialogueBd.lecture(mysql);
 
@@ -128,9 +128,12 @@ public class WService {
 
 				Proprietaire proprietaire = new Proprietaire();
 				proprietaire.setIdProprietaire(Integer.parseInt(rs.get(index + 4).toString()));
+				proprietaire.setNomProprietaire(rs.get(index + 6).toString());
+				proprietaire.setPrenomProprietaire(rs.get(index + 7).toString());
+
 				uneOeuvre.setProprietaire(proprietaire);
 
-				index = index + 5;
+				index = index + 8;
 
 				mesOeuvres.add(uneOeuvre);
 			}
@@ -203,7 +206,8 @@ public class WService {
 						"SET titre_oeuvrevente = '" + uneOeuvrevente.getTitreOeuvrevente() + "', " +
 						"etat_oeuvrevente = '" + uneOeuvrevente.getEtatOeuvrevente() + "', " +
 						"prix_oeuvrevente = '" + uneOeuvrevente.getPrixOeuvrevente() + "', " +
-						"WHERE id_proprietaire = '" + uneOeuvrevente.getProprietaire().getIdProprietaire() + "';";
+						"id_proprietaire = '" + uneOeuvrevente.getProprietaire().getIdProprietaire() + "' " +
+						"WHERE id_oeuvrevente = '" + uneOeuvrevente.getIdOeuvrevente() + "'";
 			}
 			unDialogueBd.insertionBD(mysql);
 		} catch (MonException e) {
